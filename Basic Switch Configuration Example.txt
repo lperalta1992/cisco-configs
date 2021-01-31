@@ -1,0 +1,84 @@
+!Basic Switch Configuration
+Switch>enable
+Switch#configure terminal
+!
+! Cambiando el hostname (Nombre del dispositivo)
+!
+Switch(config)#hostname S1
+!
+! Protegiendo el acceso al modo EXEC (Privilegiado)
+!
+S1(config)#enable secret Class
+!
+! Encriptando contraseñas en texto plano.
+!
+S1(config)#service password-encryption
+!
+! Protegiendo el acceso a la linea de consola (Seguridad Basica)
+!
+S1(config)#line console 0
+S1(config-line)#password Cisco
+S1(config-line)#exec-timeout 30
+S1(config-line)#logging synchronous
+S1(config-line)#login
+S1(config-line)#exit
+S1(config)#
+!
+! Desactivando la resolucion de nombres de dominio
+!
+S1(config)#no ip domain-lookup
+!
+! Configurando Banner (Mensaje del dia)
+!
+S1(config)#banner motd %
+ ### ####### #          #        #####   #####  #     #    #    
+  #     #    #         # #      #     # #     # ##    #   # #   
+  #     #    #        #   #     #       #       # #   #  #   #  
+  #     #    #       #     #    #       #       #  #  # #     # 
+  #     #    #       #######    #       #       #   # # ####### 
+  #     #    #       #     #    #     # #     # #    ## #     # 
+ ###    #    ####### #     #     #####   #####  #     # #     # 
+                                                                
+Hola Chicos. Este es un mensaje del dia. En un entorno real usted debe colocar en este mensaje una advertencia sobre las consecuencias
+del acceso no autorizado a este dispositivo.
+%
+!
+! Creando usuario
+!
+S1(config)#username Luis secret W4k4nd4-F0r3v3r! privilege 15
+!
+! Incrementando la seguridad para el Login (Protegiendo de ataques DoS por fuerza bruta y diccionario)
+!
+S1(config)#login block-for 60 attempts 3 within 15
+!
+! Creando SVI de Administración el ## de la VLAN seleccionado es a su criterio no tiene que ser este mismo.
+!
+S1(config)#vlan 99
+S1(config-vlan)#name Management
+S1(config-vlan)#exit
+!
+! Asignando dirección IPv4 e IPv6 a la VLAN de Administración
+!
+S1(config)#interface vlan 99
+S1(config-if)#ip address 172.16.0.10 255.255.255.0
+S1(config-if)#ipv6 address 2001:beba:cafe:1::10/64
+S1(config-if)#no shutdown
+S1(config-if)#exit
+!
+! Asignando puertos del switch a la VLAN de Administración
+!
+S1(config)#interface range fa0/0-5
+S1(config-if)#switchport mode access
+S1(config-if)#switchport access vlan 99
+S1(config-if)#exit
+!
+! Configurando puerta de enlace predeterminada (Default Gateway)
+!
+S1(config)#ip default-gateway 172.16.0.1
+!
+! Configurando Administración remota vía telnet (No Seguro - No Recomendado)
+!
+S1(config)#line vty 0 4
+S1(config-line)#login local						! Solo se hara login usando los credenciales de los usuarios creados con el comando username. (Recomendado)
+S1(config-line)#password Cisco				! Se define con el comando password una contraseña si NO se desea loguear con los usuarios locales creados en el equipo. 
+S1(config-line)#login									! Se debe colocar este comando para habilitar el login si se definio una contraseña previamente con el comando password.

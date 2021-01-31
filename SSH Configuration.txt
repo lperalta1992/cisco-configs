@@ -1,0 +1,27 @@
+#SSH Configuration
+
+Paso 1: Configurar el hostname del dispositivo
+
+Switch1# enable
+Switch1# configure terminal
+Switch1(config)# hostname S1 
+
+Paso 2: Nombre de dominio
+S1(config)#ip domain-name itla.edu.do
+
+Paso 3: Crear usuario
+S1(config)# username luis password Cisco123 privilege 15
+
+Paso 4: Generar llaves criptograficas
+S1(config)# crypto key generate rsa 1024
+
+Paso 5: SSH
+S1(config)# ip ssh version 2
+S1(config)# ip ssh authentication-retries 3
+S1(config)# ip ssh timeout 30
+
+Paso 6: Cambiar el metodo de entrada en la linea vty
+S1(config)# line vty 0 4
+S1(config)# login local
+S1(config)# no password
+S1(config)# transport input ssh telnet
