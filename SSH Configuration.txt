@@ -24,4 +24,9 @@ Paso 6: Cambiar el metodo de entrada en la linea vty
 S1(config)# line vty 0 4
 S1(config)# login local
 S1(config)# no password
+!
+! Con el "transport input ssh telnet" se permite acceso tanto con ssh como telnet mediante las lineas vty si están configuradas. En este ejemplo se
+! permiten ambas. Recomendado solo dejas ssh.
+!
 S1(config)# transport input ssh telnet
+
