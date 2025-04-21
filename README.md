@@ -1,1 +1,1 @@
-# Archivos de Configuracion para curso Cisco CCNA
+# Archivos de Configuración para curso Cisco CCNA
